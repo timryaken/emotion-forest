@@ -7,7 +7,7 @@
 <meta name="description" content="走進情緒山森，陪五位動物夥伴找回繪本的顏色，再到數位森林找更多好故事。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #fbf6ec;
@@ -19,11 +19,15 @@
     --cream: #fff6dc;
     --line: #e2d6bd;
     --card: #fffdf8;
-    --blue: #3b7dd8;
-    --green: #3fa66b;
-    --red: #d9534f;
-    --orange: #f08a24;
-    --purple: #8e5bc9;
+    /* 五色取自 1007 完稿海報 */
+    --blue: #4391c3;
+    --green: #7aab10;
+    --red: #ef3a4a;
+    --orange: #f6792f;
+    --purple: #5f88f2;
+    --sky-top: #f8fefe;
+    --sky: #e6f7f5;
+    --ink-blue: #24506b;
     --radius: 18px;
     --shadow: 0 2px 0 rgba(43,42,38,.08), 0 10px 24px -12px rgba(43,42,38,.25);
     --footer-h: 76px;
@@ -241,6 +245,88 @@
   @media (max-width: 520px) { footer span { display: none; } footer img { height: 34px; } }
 
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+  /* ═══════ 海報風格：抽卡、小任務、完整介紹、恭喜 ═══════ */
+  .round { font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; }
+  body[data-view="draw"], body[data-view="forest"], body[data-view="guide"] { background: var(--sky); }
+  #draw, #forest, #guide {
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky) 55%, #def3ee 100%);
+    color: var(--ink);
+  }
+  #draw h2, #forest h2, #guide h2, .congrats-card h2 {
+    font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; color: var(--ink-blue); letter-spacing: .03em;
+  }
+  #draw .eyebrow, #forest .eyebrow, #guide .eyebrow {
+    display: inline-block; padding: 3px 14px; border-radius: 999px; background: var(--blue); color: #fff;
+    font-size: 13px; letter-spacing: .08em;
+  }
+  #draw .lead { color: var(--ink-soft); }
+
+  /* 抽卡：淺色天空＋底部山林 */
+  #draw { position: relative; overflow: hidden; padding-bottom: clamp(140px, 22vw, 260px); }
+  #draw::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: clamp(120px, 20vw, 240px);
+    background: url("img/land-ebook.jpg") center bottom / cover no-repeat;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%); mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  }
+  #draw .wrap { position: relative; z-index: 1; }
+  .leaf-back { background: linear-gradient(160deg, #9ccc4a, #6fa22a); box-shadow: inset 0 0 0 3px rgba(255,255,255,.35), 0 8px 18px -10px rgba(40,70,20,.6); }
+  .leaf-back::before { color: rgba(255,255,255,.9); }
+  .draw-msg { color: var(--ink-blue); font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; font-size: 24px; }
+
+  /* 小任務卡片 */
+  .lib { border-left: 0; border-radius: 26px; box-shadow: 0 2px 0 rgba(36,80,107,.06), 0 14px 30px -18px rgba(36,80,107,.45); }
+  .lib-summary { padding: 16px 20px; }
+  .lib-icon { border-radius: 50%; box-shadow: inset 0 0 0 3px rgba(255,255,255,.45); }
+  .lib-title h3 { font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; font-size: 20px; color: color-mix(in srgb, var(--c) 70%, black); }
+  .lib-body { padding: 0 20px 22px; }
+  .land { margin: 0 -20px 16px; height: 120px; background: var(--sky) center 70% / cover no-repeat; }
+  .mission { background: var(--c); color: #fff; border-radius: 22px; }
+  .mission .m-label { color: var(--c); background: #fff; align-self: flex-start; padding: 2px 12px; border-radius: 999px; }
+  .mission h4 { font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; font-size: 20px; }
+  .mission p, .mission label { color: rgba(255,255,255,.95); }
+  .mission input { border-color: transparent; }
+  .mission .btn.ghost { background: #fff; color: var(--ink); box-shadow: none; }
+  .done-btn { background: var(--ink-blue); box-shadow: 0 3px 0 #10293a; }
+  .lib.complete .done-btn { background: rgba(0,0,0,.25); }
+  .done-note { color: #fff; }
+  .lib.complete .done-note { display: inline; }
+  .nudge { background: var(--ink-blue); border-radius: 22px; }
+  #forest .stamp, .congrats .stamp { background: #cfe8e4; }
+  #forest .stamp.on, .congrats .stamp.on { background: var(--c); }
+  .stamp.on { box-shadow: inset 0 0 0 3px rgba(255,255,255,.4); }
+  .guide-link { background: #fff; border-radius: 22px; box-shadow: inset 0 0 0 2px var(--blue); color: var(--ink-blue); }
+  .guide-link:hover { background: #eef7fc; }
+  .login-note { background: rgba(255,255,255,.7); border-color: #bfe0dc; border-radius: 22px; }
+
+  /* 完整介紹 */
+  .guide-nav a { border-radius: 999px; background: #fff; }
+  .guide-item { border-top: 0; border-radius: 28px; box-shadow: 0 2px 0 rgba(36,80,107,.06), 0 18px 36px -22px rgba(36,80,107,.5); }
+  .guide-land { height: clamp(120px, 20vw, 200px); background: var(--sky) center 70% / cover no-repeat; position: relative; }
+  .guide-land .pill {
+    position: absolute; left: 20px; top: 16px; padding: 4px 16px; border-radius: 999px; background: var(--c); color: #fff;
+    font-family: "Huninn", "Noto Sans TC", sans-serif; font-size: 15px; box-shadow: 0 4px 10px -4px rgba(0,0,0,.3);
+  }
+  .shot { background: #f3fbfa; justify-content: flex-start; padding-top: 26px; }
+  .guide-item, .lib { background: #fff; }
+  .guide-body h3 { font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; font-size: 26px; color: color-mix(in srgb, var(--c) 70%, black); }
+  .guide-body h4 { color: color-mix(in srgb, var(--c) 70%, black); }
+  .tip {
+    margin-top: 18px; background: var(--c); color: #fff; border-radius: 22px; padding: 16px 18px 16px 16px;
+    display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: start;
+  }
+  .tip-badge {
+    width: 64px; height: 64px; border-radius: 50%; background: #fff; color: var(--c); display: grid; place-items: center; text-align: center;
+    font-family: "Huninn", "Noto Sans TC", sans-serif; font-size: 14px; line-height: 1.2;
+  }
+  .tip h4 { margin: 2px 0 6px; color: #fff; }
+  .tip ul { color: rgba(255,255,255,.95); }
+  .guide-actions .go { box-shadow: 0 4px 0 color-mix(in srgb, var(--c) 60%, black); }
+
+  /* 恭喜 */
+  .congrats { background: rgba(36,80,107,.55); }
+  .congrats-card { border-radius: 30px; overflow: hidden; padding-top: 0; }
+  .congrats-land { margin: 0 -26px 22px; height: 130px; background: url("img/land-storybook.jpg") center 65% / cover no-repeat; }
 </style>
 </head>
 <body data-view="gate">
@@ -398,6 +484,7 @@
 <!-- ═════════ 恭喜 ═════════ -->
 <div class="congrats" id="congrats" role="dialog" aria-modal="true" aria-labelledby="congratsTitle">
   <div class="congrats-card">
+    <div class="congrats-land" aria-hidden="true"></div>
     <div class="confetti" id="confetti"></div>
     <h2 id="congratsTitle">🎉 五座森林全破！</h2>
     <div class="stamps" id="congratsStamps"></div>
@@ -583,7 +670,7 @@
         '<span class="lib-title"><h3></h3><span class="one"></span></span>' +
         '<span class="lib-status"></span><span class="chev" aria-hidden="true"></span>' +
       '</button>' +
-      '<div class="lib-body">' +
+      '<div class="lib-body"><div class="land" aria-hidden="true"></div>' +
         '<p class="desc"></p><div class="tags"></div>' +
         '<div class="mission">' +
           '<div class="m-label">小任務</div><h4></h4><p class="task"></p>' +
@@ -598,6 +685,7 @@
     const sum = el.querySelector(".lib-summary");
     sum.setAttribute("aria-expanded", open ? "true" : "false");
     el.querySelector(".lib-icon").textContent = lib.icon;
+    el.querySelector(".land").style.backgroundImage = 'url("img/land-' + lib.id + '.jpg")';
     const h3 = el.querySelector("h3");
     h3.textContent = lib.name;
     if (isPicked) { const p = document.createElement("span"); p.className = "picked"; p.textContent = "你抽到的"; h3.appendChild(p); }
@@ -717,6 +805,7 @@
       el.id = "g-" + lib.id;
       el.style.setProperty("--c", lib.color);
       el.innerHTML =
+        '<div class="guide-land" aria-hidden="true"><span class="pill"></span></div>' +
         '<div class="guide-grid">' +
           '<figure class="shot"><div class="shot-frame"><div class="shot-bar"><i></i><i></i><i></i></div><img loading="lazy"></div><figcaption></figcaption></figure>' +
           '<div class="guide-body">' +
@@ -724,7 +813,7 @@
             '<div class="tags"></div>' +
             '<p class="intro"></p>' +
             '<h4>🕒 什麼時候可以用？</h4><ul class="when"></ul>' +
-            '<h4>🤝 爸媽、老師可以這樣幫忙</h4><ul class="help"></ul>' +
+            '<div class="tip"><span class="tip-badge">大人<br>小幫手</span><div><h4>爸媽、老師可以這樣幫忙</h4><ul class="help"></ul></div></div>' +
             '<div class="guide-actions"><a class="btn go" target="_blank" rel="noopener">前往' + '</a></div>' +
           '</div>' +
         '</div>';
@@ -732,6 +821,8 @@
       img.src = g.img;
       img.alt = lib.name + "畫面截圖";
       el.querySelector("figcaption").textContent = g.cap;
+      el.querySelector(".guide-land").style.backgroundImage = 'url("img/land-' + lib.id + '.jpg")';
+      el.querySelector(".pill").textContent = lib.card.name;
       el.querySelector(".ic").textContent = lib.icon;
       el.querySelector(".nm").textContent = lib.name;
       lib.tags.forEach(t => { const s = document.createElement("span"); s.textContent = t; el.querySelector(".tags").appendChild(s); });
