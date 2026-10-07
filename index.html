@@ -40,7 +40,8 @@
   .view { display: none; }
   body[data-view="gate"] #gate,
   body[data-view="draw"] #draw,
-  body[data-view="forest"] #forest { display: block; }
+  body[data-view="forest"] #forest,
+  body[data-view="guide"] #guide { display: block; }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -176,6 +177,46 @@
   .lib.complete .done-note { display: inline; }
   .login-note { margin-top: 22px; font-size: 15px; color: var(--ink-soft); background: var(--card); border-radius: var(--radius); padding: 16px 20px; border: 2px dashed var(--line); }
 
+  .guide-link {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px;
+    padding: 16px 20px; border-radius: var(--radius); background: var(--paper-2); text-decoration: none; font-weight: 700;
+  }
+  .guide-link:hover { background: var(--line); }
+  .guide-link span:last-child { font-weight: 900; white-space: nowrap; }
+  @media (max-width: 520px) { .guide-link { flex-direction: column; align-items: flex-start; font-weight: 500; } }
+
+  /* ───────── 完整介紹 ───────── */
+  #guide { padding: 40px 0 72px; min-height: calc(100svh - var(--footer-h)); }
+  .guide-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .guide-nav a {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
+    background: var(--card); box-shadow: inset 0 0 0 2px var(--c); text-decoration: none; font-size: 14px; font-weight: 700;
+  }
+  .guide-nav a:hover { background: color-mix(in srgb, var(--c) 12%, white); }
+  .guide-item {
+    margin-top: 28px; background: var(--card); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden;
+    border-top: 8px solid var(--c); scroll-margin-top: 16px;
+  }
+  .guide-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 0; }
+  @media (max-width: 820px) { .guide-grid { grid-template-columns: 1fr; } }
+  .shot { margin: 0; padding: 20px; background: color-mix(in srgb, var(--c) 8%, var(--paper)); display: flex; flex-direction: column; justify-content: center; }
+  .shot-frame { border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 8px 22px -10px rgba(0,0,0,.35); }
+  .shot-bar { height: 22px; background: #ece7dc; display: flex; align-items: center; gap: 5px; padding: 0 9px; }
+  .shot-bar i { width: 8px; height: 8px; border-radius: 50%; background: #cfc6b4; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot figcaption { font-size: 12px; color: var(--ink-soft); margin-top: 8px; text-align: center; }
+  .guide-body { padding: 24px 24px 26px; }
+  .guide-body h3 { font-size: 24px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .guide-body h3 .ic { font-size: 26px; }
+  .guide-body .intro { margin: 12px 0 0; }
+  .guide-body h4 { margin: 18px 0 6px; font-size: 15px; font-weight: 900; letter-spacing: .04em; color: color-mix(in srgb, var(--c) 75%, black); }
+  .guide-body ul { margin: 0; padding-left: 1.2em; color: var(--ink-soft); font-size: 15px; }
+  .guide-body li { margin: 4px 0; }
+  .guide-body .tags { margin: 12px 0 0; }
+  .guide-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 20px; }
+  .guide-actions .go { background: var(--c); box-shadow: 0 4px 0 color-mix(in srgb, var(--c) 60%, black); }
+  .guide-actions .stamped { font-weight: 900; font-size: 14px; color: color-mix(in srgb, var(--c) 75%, black); }
+
   /* ───────── 恭喜 ───────── */
   .congrats { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; padding: 16px; background: rgba(24,51,38,.72); }
   .congrats.show { display: grid; }
@@ -296,7 +337,7 @@
     </div>
     <span class="gate-enter">走進森林 ▶</span>
   </a>
-  <a class="gate-side" href="#forest">數位森林資料庫 →</a>
+  <a class="gate-side" href="#guide">數位森林資料庫介紹 →</a>
 </section>
 
 <!-- ═════════ 抽卡 ═════════ -->
@@ -321,6 +362,7 @@
       </div>
       <div class="head-links">
         <a href="#draw">重新抽卡</a>
+        <a href="#guide">完整介紹</a>
         <a href="#gate">回到森林入口</a>
       </div>
     </div>
@@ -328,7 +370,28 @@
     <div class="stamps" id="stamps" aria-live="polite"></div>
     <div class="nudge" id="nudge" role="status"></div>
     <div class="lib-list" id="libList"></div>
-    <div class="login-note">📚 進入資料庫要用<b>國資圖讀者帳號</b>登入。還沒有帳號的話，可以請爸媽或老師幫忙申辦。</div>
+    <a class="guide-link" href="#guide"><span>📖 想更認識這五座森林？裡面有截圖、使用時機，還有爸媽和老師可以怎麼幫忙。</span><span>看完整介紹 →</span></a>
+    <div class="login-note">📚 大部分資料庫要用<b>國資圖讀者帳號</b>登入。還沒有帳號的話，可以請爸媽或老師幫忙申辦。</div>
+  </div>
+</section>
+
+<!-- ═════════ 完整介紹 ═════════ -->
+<section class="view" id="guide">
+  <div class="wrap">
+    <div class="forest-head">
+      <div>
+        <div class="eyebrow">數位森林完整介紹</div>
+        <h2>五座數位森林，什麼時候用得上？</h2>
+        <p class="lead">這五個都是國立公共資訊圖書館的免費數位資源。看看每一座森林適合什麼時候去，也可以把這頁分享給爸爸媽媽或老師，請他們一起陪你逛。</p>
+      </div>
+      <div class="head-links">
+        <a href="#forest">小任務</a>
+        <a href="#gate">回到森林入口</a>
+      </div>
+    </div>
+    <nav class="guide-nav" id="guideNav" aria-label="資料庫快速導覽"></nav>
+    <div id="guideList"></div>
+    <div class="login-note">📚 大部分資料庫要用<b>國資圖讀者帳號</b>登入。還沒有帳號的話，可以請爸媽或老師幫忙申辦；用手機或平板的話，有些資料庫要先下載 App。</div>
   </div>
 </section>
 
@@ -339,7 +402,7 @@
     <h2 id="congratsTitle">🎉 五座森林全破！</h2>
     <div class="stamps" id="congratsStamps"></div>
     <p>五枚樹葉章全部蓋滿，你已經是情緒山森的閱讀探險家了！<br>把這個畫面拿給老師或館員看看吧。</p>
-    <button class="btn" id="congratsClose" type="button">回到數位森林</button>
+    <button class="btn" id="congratsClose" type="button">看五座森林的完整介紹</button>
   </div>
 </div>
 
@@ -357,35 +420,40 @@
   const GAME_URL = "https://new.playreal.city?openExternalBrowser=1&serialNumber=SPNMLISBWDKA";
 
   const LIBS = [
-    { id: "storybook", name: "圓夢繪本資料庫", color: "var(--blue)", icon: "🌱",
+    { id: "storybook",
+      guide: {"img": "img/storybook.jpg", "cap": "圓夢繪本資料庫首頁", "intro": "這裡的繪本，很多是跟你一樣的學生自己寫、自己畫的。可以照年齡（7–9 歲、10–12 歲）、主題或語言找書，還有台語、客語的動畫繪本和多語繪本。國資圖從約 1,500 本作品裡選出的「原創之星100」，也都在這裡。", "when": ["想知道別的小朋友遇到煩惱時怎麼想", "要寫讀書心得，或想畫自己的故事、需要找靈感", "想聽聽台語、客語的故事"], "help": ["陪孩子用「依適讀年齡」挑一本剛好的書", "讀完問一句：「如果是你，這一頁會怎麼畫？」", "老師可以把學生作品當繪本創作課的範例"]}, name: "圓夢繪本資料庫", color: "var(--blue)", icon: "🌱",
       url: "https://storybook.nlpi.edu.tw/",
       one: "學生自己寫、自己畫的原創繪本",
       desc: "收錄學生自己寫、自己畫的原創繪本。看看跟你差不多大的孩子，怎麼把心裡的感受畫成故事。",
       tags: ["學生原創", "電腦／手機"],
       card: { name: "夢想的種子", text: "你想看看同學們把心裡的感受畫成故事？" },
       mission: { title: "心情是什麼顏色？", task: "找一本同學畫的繪本。讀完後想一想：主角的心情，像什麼顏色？", field: "書名＋心情顏色" } },
-    { id: "ebook", name: "電子書服務平台", color: "var(--green)", icon: "💧",
+    { id: "ebook",
+      guide: {"img": "img/ebook.jpg", "cap": "電子書服務平台首頁", "intro": "國資圖的線上借書處，有超過 5 萬種、50 多萬冊電子書，也有有聲書。每本書都標了 SR 值（閱讀難度），三年級大約 345–404、六年級大約 478–536，可以挑剛好適合自己的書。手機、平板下載 App 也能讀。", "when": ["寫報告、做作業需要找資料", "想讀的書在圖書館被借光了", "睡前想安靜讀一本書，或想聽有聲書"], "help": ["協助孩子註冊會員、下載 App", "依孩子的年級，用 SR 值一起找難度剛好的書", "老師可以開一份班級書單，讓全班一起借閱"]}, name: "電子書服務平台", color: "var(--green)", icon: "💧",
       url: "https://ebook.nlpi.edu.tw/",
       one: "線上借電子書，各種主題都有",
       desc: "國資圖的電子書借閱平台，有各種主題的繪本和讀物，用讀者帳號就能線上借來看。",
       tags: ["借閱電子書", "各年齡"],
       card: { name: "靜謐的湖水", text: "探險了一整天，想找個安靜的角落慢慢讀？" },
       mission: { title: "找一本冷靜的書", task: "用「情緒」或「勇氣」當關鍵字搜尋，挑一本你想讀的書。", field: "書名" } },
-    { id: "grimm", name: "格林咕嚕熊親子共讀網", color: "var(--red)", icon: "🌳",
+    { id: "grimm",
+      guide: {"img": "img/grimm.jpg", "cap": "格林咕嚕熊親子共讀網書單畫面（圖片來源：國資圖數位資源入口網）", "intro": "格林文化出版的精選繪本，由世界各地知名插畫家繪製，配上聲音和動畫，有「動感繪本」也有「翻頁書」。還有一百多本由外籍老師錄音的英文版繪本，同一個故事可以先聽中文、再聽英文。", "when": ["想看畫得很美、很特別的繪本", "想一邊聽故事、一邊看圖", "想練英文聽力，又想從熟悉的故事開始"], "help": ["很適合親子共讀，讀完一起聊聊插畫裡藏了哪些細節", "每本書同時只能 1 人閱讀，打不開時換一本或晚點再試", "老師可以挑一本當課堂討論的開場"]}, name: "格林咕嚕熊親子共讀網", color: "var(--red)", icon: "🌳",
       url: "https://grimmbook.nlpi.edu.tw/",
       one: "世界級插畫家的動畫繪本",
       desc: "格林文化的精選繪本，由世界各地的插畫家繪製，搭配聲音和動畫；還有一百多本英文版繪本。",
       tags: ["動畫繪本", "親子共讀", "每本同時 1 人"],
       card: { name: "世界之樹", text: "你想看世界級插畫家畫的繪本？" },
       mission: { title: "數數封面的顏色", task: "找一本插畫家畫的繪本，數數看封面上用了幾種顏色。", field: "書名＋顏色數量" } },
-    { id: "funpark", name: "FunPark 童書夢工廠", color: "var(--orange)", icon: "✨",
+    { id: "funpark",
+      guide: {"img": "img/funpark.jpg", "cap": "FunPark 童書夢工廠登入畫面（圖片來源：國資圖數位資源入口網）", "intro": "這裡的童書會動、可以點！有故事館、刊物館、學習館、詩詞館四個館，共 200 多本國內精選的互動繪本。點點畫面，角色會動、會說話，還能看自己的閱讀紀錄、分享自己的創作。", "when": ["不想只看字，想邊玩邊讀", "想讀詩詞，又覺得課本有點無聊", "下課、假日想找輕鬆好玩的故事"], "help": ["手機、平板要先下載「FunPark 童書夢工廠」App，選國立公共資訊圖書館再登入", "陪孩子看看閱讀紀錄，聊聊最喜歡哪一本、為什麼", "老師可以用詩詞館當國語課的延伸"]}, name: "FunPark 童書夢工廠", color: "var(--orange)", icon: "✨",
       url: "https://ers.nlpi.edu.tw/resourceDetail?resourceType=databases&id=14V201100",
       one: "會動、可以點的互動童書",
       desc: "全互動式的電子童書，有故事館、刊物館、學習館、詩詞館，一邊看故事、一邊點點看每個角色在想什麼。",
       tags: ["互動繪本", "手機可下載 App"],
       card: { name: "閃耀的螢火蟲", text: "你喜歡熱鬧，想看會動、可以點的故事？" },
       mission: { title: "主角怎麼交朋友？", task: "讀一個故事，找出主角是怎麼交到朋友，或怎麼跟朋友和好的。", field: "書名＋一句話" } },
-    { id: "tumble", name: "TumbleBooks 互動英文電子書", color: "var(--purple)", icon: "🕊️",
+    { id: "tumble",
+      guide: {"img": "img/tumble.jpg", "cap": "TumbleBooks 首頁（圖片來源：國資圖數位資源入口網）", "intro": "一座英文故事遊樂場。故事書有動畫、配樂和朗讀，還有跟讀故事、圖像小說、知識書、影片，以及拼圖和小遊戲；首頁每天都會推薦一本「今日故事書」。電腦、平板、手機用瀏覽器就能看，不用下載 App。", "when": ["想練英文聽力、學新單字", "英文課前想先熱身", "想看看外國小朋友都讀什麼故事"], "help": ["網站是英文介面，第一次可以陪孩子一起找故事", "大人英文不好也沒關係，故事會自己朗讀，陪著聽就好", "讓孩子挑一個聽到的新單字，晚餐時說給家人聽"]}, name: "TumbleBooks 互動英文電子書", color: "var(--purple)", icon: "🕊️",
       url: "https://ers.nlpi.edu.tw/resourceDetail?resourceType=databases&id=14P201L7S",
       one: "有動畫朗讀的英文故事",
       desc: "有動畫、配樂和朗讀的英文故事書，還有小遊戲和測驗，輕鬆認識英文。",
@@ -420,10 +488,11 @@
   let forestMode = "all";   // "picked"：剛抽完卡；"all"：全部展開
   function route() {
     const h = location.hash.replace("#", "");
-    const view = ["draw", "forest"].includes(h) ? h : "gate";
+    const view = ["draw", "forest", "guide"].includes(h) ? h : "gate";
     document.body.dataset.view = view;
     if (view === "draw") dealLeaves();
     if (view === "forest") { renderForest(); forestMode = "all"; }
+    if (view === "guide") renderGuide();
     window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
@@ -624,9 +693,69 @@
   }
   function closeCongrats() {
     congrats.classList.remove("show");
-    forestMode = "all";
-    renderForest();
-    window.scrollTo(0, 0);
+    location.hash = "#guide";
+  }
+
+  // ── 完整介紹 ─────────────────────────────────────
+  function renderGuide() {
+    const nav = document.getElementById("guideNav");
+    const list = document.getElementById("guideList");
+    nav.innerHTML = "";
+    list.innerHTML = "";
+    LIBS.forEach(lib => {
+      const g = lib.guide;
+      const a = document.createElement("a");
+      a.href = "#g-" + lib.id;
+      a.style.setProperty("--c", lib.color);
+      a.textContent = lib.icon + " " + lib.name;
+      a.addEventListener("click", e => { e.preventDefault(); document.getElementById("g-" + lib.id).scrollIntoView({ behavior: "smooth" }); });
+      nav.appendChild(a);
+
+      const done = !!(state.quests[lib.id] && state.quests[lib.id].done);
+      const el = document.createElement("article");
+      el.className = "guide-item";
+      el.id = "g-" + lib.id;
+      el.style.setProperty("--c", lib.color);
+      el.innerHTML =
+        '<div class="guide-grid">' +
+          '<figure class="shot"><div class="shot-frame"><div class="shot-bar"><i></i><i></i><i></i></div><img loading="lazy"></div><figcaption></figcaption></figure>' +
+          '<div class="guide-body">' +
+            '<h3><span class="ic" aria-hidden="true"></span><span class="nm"></span></h3>' +
+            '<div class="tags"></div>' +
+            '<p class="intro"></p>' +
+            '<h4>🕒 什麼時候可以用？</h4><ul class="when"></ul>' +
+            '<h4>🤝 爸媽、老師可以這樣幫忙</h4><ul class="help"></ul>' +
+            '<div class="guide-actions"><a class="btn go" target="_blank" rel="noopener">前往' + '</a></div>' +
+          '</div>' +
+        '</div>';
+      const img = el.querySelector("img");
+      img.src = g.img;
+      img.alt = lib.name + "畫面截圖";
+      el.querySelector("figcaption").textContent = g.cap;
+      el.querySelector(".ic").textContent = lib.icon;
+      el.querySelector(".nm").textContent = lib.name;
+      lib.tags.forEach(t => { const s = document.createElement("span"); s.textContent = t; el.querySelector(".tags").appendChild(s); });
+      el.querySelector(".intro").textContent = g.intro;
+      g.when.forEach(t => { const li = document.createElement("li"); li.textContent = t; el.querySelector(".when").appendChild(li); });
+      g.help.forEach(t => { const li = document.createElement("li"); li.textContent = t; el.querySelector(".help").appendChild(li); });
+      const go = el.querySelector(".go");
+      go.href = lib.url;
+      go.textContent = "前往" + lib.name + " ↗";
+      const acts = el.querySelector(".guide-actions");
+      if (done) {
+        const s = document.createElement("span");
+        s.className = "stamped";
+        s.textContent = "✔ 小任務已蓋章";
+        acts.appendChild(s);
+      } else {
+        const t = document.createElement("a");
+        t.className = "btn small ghost";
+        t.href = "#forest";
+        t.textContent = "去做小任務";
+        acts.appendChild(t);
+      }
+      list.appendChild(el);
+    });
   }
   document.getElementById("congratsClose").addEventListener("click", closeCongrats);
   congrats.addEventListener("keydown", e => { if (e.key === "Escape") closeCongrats(); });
