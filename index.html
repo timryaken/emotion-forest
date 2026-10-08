@@ -46,6 +46,7 @@
   body[data-view="draw"] #draw,
   body[data-view="forest"] #forest,
   body[data-view="guide"] #guide { display: block; }
+  body[data-view="play"] #play { display: grid; }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -99,6 +100,31 @@
     padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.25);
   }
   .gate-side:hover { color: var(--cream); background: rgba(0,0,0,.45); }
+
+  /* ───────── 電腦版：手機比例遊戲框 ───────── */
+  #play {
+    --phone-h: min(calc(100svh - var(--footer-h) - 48px), 880px);
+    min-height: calc(100svh - var(--footer-h)); padding: 24px 16px;
+    grid-template-columns: 1fr auto 1fr; align-items: center; gap: 40px;
+    background: radial-gradient(ellipse at 50% 40%, #2f5d46 0%, var(--forest-deep) 70%); color: var(--cream);
+  }
+  .phone {
+    grid-column: 2; height: var(--phone-h); aspect-ratio: 390 / 844;
+    padding: 12px; border-radius: 48px; background: #101a14;
+    box-shadow: inset 0 0 0 2px #3c5446, 0 30px 60px -20px rgba(0,0,0,.7), 0 0 0 10px rgba(255,226,122,.08);
+  }
+  .phone iframe { display: block; width: 100%; height: 100%; border: 0; border-radius: 37px; background: #fff; }
+  .play-side { grid-column: 1; justify-self: end; max-width: 260px; display: flex; flex-direction: column; gap: 14px; text-align: right; align-items: flex-end; }
+  .play-side h2 { font-size: 26px; font-weight: 900; letter-spacing: .04em; }
+  .play-side p { margin: 0; font-size: 15px; color: rgba(255,246,220,.82); }
+  .play-side .btn.ghost { color: var(--cream); box-shadow: inset 0 0 0 2px rgba(255,246,220,.6); }
+  .play-side .newtab { font-size: 14px; color: rgba(255,246,220,.75); }
+  .play-side .newtab:hover { color: var(--cream); }
+  @media (max-width: 900px) {
+    #play { grid-template-columns: 1fr; gap: 18px; justify-items: center; }
+    .phone { grid-column: 1; --phone-h: min(calc(100svh - var(--footer-h) - 170px), 880px); }
+    .play-side { grid-column: 1; grid-row: 1; justify-self: center; text-align: center; align-items: center; max-width: none; }
+  }
 
   /* ───────── 抽卡 ───────── */
   #draw { background: var(--forest); color: #fff; min-height: calc(100svh - var(--footer-h)); padding: 56px 0 72px; }
@@ -426,6 +452,19 @@
   <a class="gate-side" href="#guide">數位森林資料庫介紹 →</a>
 </section>
 
+<!-- ═════════ 電腦版遊戲框 ═════════ -->
+<section class="view" id="play" aria-label="遊戲畫面">
+  <div class="play-side">
+    <h2>探險開始！</h2>
+    <p>用滑鼠點一點，陪五位動物夥伴解開心情難題。玩到最後按「回到主網頁」，就能抽閱讀羅盤卡。</p>
+    <a class="btn ghost small" href="#gate">← 回到森林入口</a>
+    <a class="newtab" id="playNewTab" href="#" target="_blank" rel="noopener">畫面太小？在新分頁開啟 ↗</a>
+  </div>
+  <div class="phone">
+    <iframe id="playFrame" title="情緒山森探險隊遊戲" allow="autoplay; fullscreen; camera; microphone; geolocation; clipboard-write"></iframe>
+  </div>
+</section>
+
 <!-- ═════════ 抽卡 ═════════ -->
 <section class="view" id="draw">
   <div class="wrap">
@@ -564,7 +603,22 @@
   const doneCount = () => LIBS.filter(l => state.quests[l.id] && state.quests[l.id].done).length;
 
   // ── 畫面切換 ─────────────────────────────────────
-  document.getElementById("gateLink").href = GAME_URL;
+  // 遊戲在電腦版是嵌在 iframe 裡；結局按「回到主網頁」時，改成整頁跳回來
+  if (window.top !== window.self) {
+    try { window.top.location.href = location.href; } catch (e) {}
+  }
+
+  // 電腦（夠寬、用滑鼠）在本頁開手機比例的遊戲框；手機、平板直接開遊戲
+  const isDesktop = () => matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches;
+  const gateLink = document.getElementById("gateLink");
+  const playFrame = document.getElementById("playFrame");
+  gateLink.href = GAME_URL;
+  document.getElementById("playNewTab").href = GAME_URL;
+  gateLink.addEventListener("click", e => {
+    if (!isDesktop()) return;
+    e.preventDefault();
+    location.hash = "#play";
+  });
 
   // 從遊戲回來：?from=game → 抽卡（抽過就直接進數位森林）
   const params = new URLSearchParams(location.search);
@@ -575,8 +629,11 @@
   let forestMode = "all";   // "picked"：剛抽完卡；"all"：全部展開
   function route() {
     const h = location.hash.replace("#", "");
-    const view = ["draw", "forest", "guide"].includes(h) ? h : "gate";
+    let view = ["draw", "forest", "guide", "play"].includes(h) ? h : "gate";
+    if (view === "play" && !isDesktop()) { location.href = GAME_URL; return; }
     document.body.dataset.view = view;
+    if (view === "play") { if (playFrame.dataset.on !== "1") { playFrame.src = GAME_URL; playFrame.dataset.on = "1"; } }
+    else if (playFrame.dataset.on === "1") { playFrame.src = "about:blank"; playFrame.dataset.on = ""; }   // 離開時停掉遊戲（含音效）
     if (view === "draw") dealLeaves();
     if (view === "forest") { renderForest(); forestMode = "all"; }
     if (view === "guide") renderGuide();
