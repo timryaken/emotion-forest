@@ -113,7 +113,23 @@
     padding: 12px; border-radius: 48px; background: #101a14;
     box-shadow: inset 0 0 0 2px #3c5446, 0 30px 60px -20px rgba(0,0,0,.7), 0 0 0 10px rgba(255,226,122,.08);
   }
-  .phone iframe { display: block; width: 100%; height: 100%; border: 0; border-radius: 37px; background: #fff; }
+  .phone-screen { position: relative; display: block; width: 100%; height: 100%; border-radius: 37px; overflow: hidden; background: #fff; }
+  .phone-screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .mock-tag {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    padding: 4px 12px; border-radius: 999px; background: rgba(24,51,38,.78); color: var(--cream);
+    font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  }
+  .play-qr {
+    grid-column: 3; justify-self: start; width: 220px; padding: 20px 18px 18px; border-radius: var(--radius);
+    background: var(--cream); color: var(--ink); text-align: center; box-shadow: 0 20px 40px -20px rgba(0,0,0,.6);
+  }
+  .play-qr .qr-svg { display: block; width: 100%; height: auto; padding: 10px; background: #fff; border-radius: 10px; }
+  .play-qr h3 { margin-top: 14px; font-size: 18px; font-weight: 900; }
+  .play-qr p { margin: 4px 0 0; font-size: 13px; line-height: 1.6; color: #5b5a52; }
+  .play-side .btn.done { background: #ffe27a; color: var(--ink); box-shadow: 0 4px 0 #b8971c; }
+  .play-side .btn.done:hover { box-shadow: 0 6px 0 #b8971c; }
+  .play-side .hint { font-size: 13px; color: rgba(255,246,220,.6); }
   .play-side { grid-column: 1; justify-self: end; max-width: 260px; display: flex; flex-direction: column; gap: 14px; text-align: right; align-items: flex-end; }
   .play-side h2 { font-size: 26px; font-weight: 900; letter-spacing: .04em; }
   .play-side p { margin: 0; font-size: 15px; color: rgba(255,246,220,.82); }
@@ -124,6 +140,7 @@
     #play { grid-template-columns: 1fr; gap: 18px; justify-items: center; }
     .phone { grid-column: 1; --phone-h: min(calc(100svh - var(--footer-h) - 170px), 880px); }
     .play-side { grid-column: 1; grid-row: 1; justify-self: center; text-align: center; align-items: center; max-width: none; }
+    .play-qr { grid-column: 1; grid-row: 2; justify-self: center; }
   }
 
   /* ───────── 抽卡 ───────── */
@@ -456,12 +473,23 @@
 <section class="view" id="play" aria-label="遊戲畫面">
   <div class="play-side">
     <h2>探險開始！</h2>
-    <p>用滑鼠點一點，陪五位動物夥伴解開心情難題。玩到最後按「回到主網頁」，就能抽閱讀羅盤卡。</p>
+    <p>陪五位動物夥伴解開心情難題。遊戲用手機玩最順，掃描 QR Code 就能開始；玩到最後按「回到主網頁」，就會來到小任務。</p>
+    <a class="btn done small" href="?from=game">✓ 玩完了，前往小任務</a>
+    <span class="hint">（示意：遊戲結局會帶你回到這裡）</span>
     <a class="btn ghost small" href="#gate">← 回到森林入口</a>
-    <a class="newtab" id="playNewTab" href="#" target="_blank" rel="noopener">畫面太小？在新分頁開啟 ↗</a>
+    <a class="newtab" id="playNewTab" href="#" target="_blank" rel="noopener">用電腦玩：在新分頁開啟 ↗</a>
   </div>
   <div class="phone">
-    <iframe id="playFrame" title="情緒山森探險隊遊戲" allow="autoplay; camera; microphone; geolocation; clipboard-write"></iframe>
+    <!-- 遊戲目前還不能以手機版面內嵌，先放手機版首頁截圖示意 -->
+    <a class="phone-screen" id="playPreview" href="#" target="_blank" rel="noopener" aria-label="在新分頁開啟遊戲">
+      <img src="img/game-preview.jpg" alt="情緒山冒險小遊戲手機版首頁示意畫面" width="507" height="1100">
+      <span class="mock-tag">示意畫面</span>
+    </a>
+  </div>
+  <div class="play-qr">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" class="qr-svg" role="img" aria-label="遊戲 QR Code" shape-rendering="crispEdges"><path class="qrline" stroke="#183326" d="M0 0.5h7m1 0h1m5 0h1m1 0h1m2 0h4m3 0h3m1 0h7m-37 1h1m5 0h1m3 0h1m2 0h4m2 0h1m5 0h2m3 0h1m5 0h1m-37 1h1m1 0h3m1 0h1m2 0h1m2 0h2m2 0h3m2 0h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h2m5 0h1m2 0h1m3 0h1m1 0h4m2 0h1m1 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h2m2 0h2m2 0h2m4 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1m-37 1h1m5 0h1m1 0h1m2 0h4m2 0h1m1 0h3m2 0h2m2 0h1m1 0h1m5 0h1m-37 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-29 1h1m1 0h3m1 0h1m5 0h2m1 0h2m1 0h3m-29 1h1m3 0h1m1 0h5m1 0h1m2 0h2m2 0h2m1 0h1m1 0h1m4 0h5m2 0h1m-34 1h1m1 0h1m1 0h1m3 0h4m3 0h2m1 0h1m3 0h1m1 0h2m3 0h1m2 0h1m-36 1h1m3 0h4m4 0h1m2 0h1m3 0h1m3 0h1m1 0h1m1 0h1m2 0h1m1 0h2m-33 1h3m3 0h1m1 0h2m1 0h2m1 0h3m1 0h3m1 0h2m2 0h1m1 0h2m2 0h3m-34 1h2m1 0h5m2 0h1m1 0h1m1 0h2m3 0h3m3 0h1m1 0h3m1 0h4m-36 1h1m1 0h3m1 0h2m1 0h1m1 0h1m2 0h2m1 0h1m4 0h1m1 0h4m3 0h2m1 0h1m-36 1h1m3 0h4m2 0h1m2 0h3m1 0h1m4 0h4m1 0h8m-32 1h2m3 0h3m1 0h1m1 0h1m2 0h2m2 0h3m3 0h1m3 0h2m1 0h1m-34 1h1m3 0h2m1 0h2m1 0h5m2 0h1m1 0h1m1 0h3m1 0h2m1 0h2m2 0h4m-37 1h1m1 0h3m4 0h1m2 0h3m1 0h2m1 0h4m2 0h1m1 0h2m3 0h4m-35 1h3m1 0h2m2 0h1m1 0h4m1 0h1m1 0h1m4 0h2m1 0h2m3 0h1m2 0h1m-34 1h2m1 0h2m1 0h1m3 0h1m1 0h1m3 0h1m3 0h1m1 0h2m1 0h2m3 0h1m1 0h3m-36 1h1m2 0h1m2 0h1m2 0h4m1 0h2m1 0h1m1 0h1m1 0h4m4 0h3m1 0h2m-35 1h2m2 0h1m3 0h2m2 0h1m2 0h4m3 0h2m2 0h4m1 0h2m-32 1h3m1 0h2m1 0h2m3 0h1m1 0h2m1 0h1m1 0h1m2 0h2m1 0h4m1 0h4m-34 1h1m5 0h1m3 0h2m3 0h1m3 0h2m4 0h3m2 0h2m1 0h1m1 0h1m-35 1h1m3 0h5m5 0h1m2 0h2m1 0h1m1 0h2m2 0h4m1 0h2m1 0h1m-37 1h3m2 0h1m1 0h1m1 0h4m5 0h3m4 0h1m1 0h2m3 0h1m-31 1h2m2 0h1m1 0h8m1 0h1m2 0h4m3 0h2m2 0h2m1 0h1m-32 1h1m5 0h1m2 0h2m1 0h4m2 0h2m1 0h1m1 0h1m3 0h1m2 0h2m-35 1h2m1 0h1m2 0h1m2 0h1m1 0h2m1 0h1m1 0h2m1 0h6m2 0h6m1 0h1m-27 1h1m1 0h4m1 0h2m1 0h2m3 0h1m1 0h4m3 0h1m2 0h1m-36 1h7m1 0h1m3 0h1m2 0h3m3 0h1m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m-33 1h1m5 0h1m2 0h2m5 0h7m1 0h1m1 0h1m1 0h1m3 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h3m3 0h1m3 0h1m1 0h1m1 0h4m2 0h9m-37 1h1m1 0h3m1 0h1m4 0h4m1 0h2m1 0h1m8 0h1m1 0h2m1 0h1m2 0h1m-37 1h1m1 0h3m1 0h1m3 0h1m2 0h2m1 0h3m1 0h2m1 0h1m2 0h1m2 0h2m2 0h1m-34 1h1m5 0h1m2 0h1m1 0h4m2 0h1m1 0h1m1 0h1m1 0h1m3 0h2m1 0h1m1 0h1m1 0h2m-36 1h7m1 0h1m1 0h1m4 0h1m4 0h3m1 0h1m1 0h2m2 0h2m1 0h4"/></svg>
+    <h3>📱 用手機掃描遊玩</h3>
+    <p>打開相機對準 QR Code，就能在手機上開始探險。</p>
   </div>
 </section>
 
@@ -603,17 +631,17 @@
   const doneCount = () => LIBS.filter(l => state.quests[l.id] && state.quests[l.id].done).length;
 
   // ── 畫面切換 ─────────────────────────────────────
-  // 遊戲在電腦版是嵌在 iframe 裡；結局按「回到主網頁」時，改成整頁跳回來
+  // 若本頁被載入在 iframe 裡（例如遊戲結局在框內連回主網頁），改成整頁跳回來
   if (window.top !== window.self) {
     try { window.top.location.href = location.href; } catch (e) {}
   }
 
-  // 電腦（夠寬、用滑鼠）在本頁開手機比例的遊戲框；手機、平板直接開遊戲
+  // 電腦（夠寬、用滑鼠）在本頁開遊戲示意框＋QR Code；手機、平板直接開遊戲
   const isDesktop = () => matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches;
   const gateLink = document.getElementById("gateLink");
-  const playFrame = document.getElementById("playFrame");
   gateLink.href = GAME_URL;
   document.getElementById("playNewTab").href = GAME_URL;
+  document.getElementById("playPreview").href = GAME_URL;
   gateLink.addEventListener("click", e => {
     if (!isDesktop()) return;
     e.preventDefault();
@@ -632,8 +660,6 @@
     let view = ["draw", "forest", "guide", "play"].includes(h) ? h : "gate";
     if (view === "play" && !isDesktop()) { location.href = GAME_URL; return; }
     document.body.dataset.view = view;
-    if (view === "play") { if (playFrame.dataset.on !== "1") { playFrame.src = GAME_URL; playFrame.dataset.on = "1"; } }
-    else if (playFrame.dataset.on === "1") { playFrame.src = "about:blank"; playFrame.dataset.on = ""; }   // 離開時停掉遊戲（含音效）
     if (view === "draw") dealLeaves();
     if (view === "forest") { renderForest(); forestMode = "all"; }
     if (view === "guide") renderGuide();
