@@ -566,14 +566,14 @@
   // ── 畫面切換 ─────────────────────────────────────
   document.getElementById("gateLink").href = GAME_URL;
 
-  // 從遊戲回來：?from=game → 抽卡（抽過就直接進數位森林）
+  // 從遊戲回來：?from=game 或 #game → 抽卡（抽過就直接進數位森林）
+  const backFromGame = () => history.replaceState(null, "", location.pathname + (state.drawn ? "#forest" : "#draw"));
   const params = new URLSearchParams(location.search);
-  if (params.get("from") === "game") {
-    history.replaceState(null, "", location.pathname + (state.drawn ? "#forest" : "#draw"));
-  }
+  if (params.get("from") === "game") backFromGame();
 
   let forestMode = "all";   // "picked"：剛抽完卡；"all"：全部展開
   function route() {
+    if (location.hash === "#game") backFromGame();
     const h = location.hash.replace("#", "");
     const view = ["draw", "forest", "guide"].includes(h) ? h : "gate";
     document.body.dataset.view = view;
