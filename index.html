@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>情緒山森探險隊</title>
 <meta name="description" content="走進情緒山森，陪五位動物夥伴找回繪本的顏色，再到數位森林找更多好故事。">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2X6EF8HS8C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-2X6EF8HS8C");
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -569,11 +577,31 @@
   const save = () => { store.set("drawn", state.drawn); store.set("quests", state.quests); store.set("celebrated", state.celebrated); };
   const doneCount = () => LIBS.filter(l => state.quests[l.id] && state.quests[l.id].done).length;
 
+  // ── 使用統計（GA4 事件；forest 參數是森林名稱）──────────
+  const track = (name, params) => { try { gtag("event", name, params || {}); } catch (e) {} };
+
   // ── 畫面切換 ─────────────────────────────────────
-  document.getElementById("gateLink").href = GAME_URL;
+  const gateLink = document.getElementById("gateLink");
+  gateLink.href = GAME_URL;
+  // 開始遊戲：先送出統計再離開（統計被擋住時 0.8 秒後照樣前往）
+  gateLink.addEventListener("click", e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) { track("game_start"); return; }
+    e.preventDefault();
+    let gone = false;
+    const go = () => { if (!gone) { gone = true; location.href = GAME_URL; } };
+    track("game_start", { event_callback: go, event_timeout: 800 });
+    setTimeout(go, 800);
+  });
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="https://allpass.nlpi.edu.tw"]');
+    if (a) track("signup_click");
+  });
 
   // 從遊戲回來：?from=game 或 #game → 抽卡（抽過就直接進數位森林）
-  const backFromGame = () => history.replaceState(null, "", location.pathname + (state.drawn ? "#forest" : "#draw"));
+  const backFromGame = () => {
+    track("game_return");
+    history.replaceState(null, "", location.pathname + (state.drawn ? "#forest" : "#draw"));
+  };
   const params = new URLSearchParams(location.search);
   if (params.get("from") === "game") backFromGame();
 
@@ -583,6 +611,7 @@
     const h = location.hash.replace("#", "");
     const view = ["draw", "forest", "guide"].includes(h) ? h : "gate";
     document.body.dataset.view = view;
+    if (view !== "gate") track("view_section", { section: view });
     if (view === "draw") dealLeaves();
     if (view === "forest") { renderForest(); forestMode = "all"; }
     if (view === "guide") renderGuide();
@@ -617,6 +646,7 @@
         drawMsg.textContent = "你抽到了「" + lib.card.name + "」！";
         state.drawn = lib.id;
         save();
+        track("card_draw", { forest: lib.name });
         setTimeout(() => { forestMode = "picked"; location.hash = "#forest"; }, 1300);
       });
       leafRow.appendChild(b);
@@ -709,6 +739,7 @@
     input.placeholder = lib.mission.field;
     input.value = st.note || "";
     el.querySelector("a").href = lib.url;
+    el.querySelector("a").addEventListener("click", () => track("forest_open", { forest: lib.name, from: "mission" }));
     const btn = el.querySelector(".done-btn");
     const status = el.querySelector(".lib-status");
     const refresh = () => {
@@ -738,7 +769,7 @@
       save();
       refresh();
       renderStamps();
-      if (state.quests[lib.id].done) afterStamp(el);
+      if (state.quests[lib.id].done) { track("stamp", { forest: lib.name }); afterStamp(el); }
     });
     return el;
   }
@@ -746,7 +777,7 @@
   function afterStamp(el) {
     const n = doneCount();
     if (n === LIBS.length) {
-      if (!state.celebrated) { state.celebrated = true; save(); }
+      if (!state.celebrated) { state.celebrated = true; save(); track("all_stamps"); }
       showCongrats();
       return;
     }
@@ -837,6 +868,7 @@
       g.help.forEach(t => { const li = document.createElement("li"); li.textContent = t; el.querySelector(".help").appendChild(li); });
       const go = el.querySelector(".go");
       go.href = lib.url;
+      go.addEventListener("click", () => track("forest_open", { forest: lib.name, from: "guide" }));
       go.textContent = "前往" + lib.name + " ↗";
       const acts = el.querySelector(".guide-actions");
       if (done) {
