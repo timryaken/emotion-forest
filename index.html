@@ -319,6 +319,32 @@
     font-family: "Huninn", "Noto Sans TC", sans-serif; font-size: 15px; box-shadow: 0 4px 10px -4px rgba(0,0,0,.3);
   }
   .shot { background: #f3fbfa; justify-content: flex-start; padding-top: 26px; }
+  .shot figure { margin: 0; }
+
+  /* 推薦繪本 */
+  .picks { margin-top: 26px; }
+  .picks h4 {
+    margin: 0 0 12px; font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; font-size: 19px;
+    color: color-mix(in srgb, var(--c) 70%, black);
+  }
+  .pick-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 16px 12px; }
+  .pick-list a { display: block; text-decoration: none; color: var(--ink); }
+  .pick-cover {
+    display: grid; place-items: center; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #fff;
+    box-shadow: 0 2px 0 rgba(36,80,107,.06), 0 10px 18px -12px rgba(36,80,107,.55); transition: transform .15s ease;
+  }
+  .pick-cover img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .pick-cover.blank {
+    padding: 10px; text-align: center; color: #fff; font-family: "Huninn", "Noto Sans TC", sans-serif; font-size: 15px; line-height: 1.35;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--c) 78%, white), var(--c));
+    box-shadow: inset 6px 0 0 rgba(0,0,0,.12), 0 10px 18px -12px rgba(36,80,107,.55);
+  }
+  .pick-list a:hover .pick-cover, .pick-list a:focus-visible .pick-cover { transform: translateY(-3px); }
+  .pick-name {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    margin-top: 6px; font-size: 13px; font-weight: 700; line-height: 1.4; text-align: center;
+  }
+  .pick-note { margin: 12px 0 0; font-size: 12px; color: var(--ink-soft); text-align: center; }
   .guide-item, .lib { background: #fff; }
   .guide-body h3 { font-family: "Huninn", "Noto Sans TC", sans-serif; font-weight: 400; font-size: 26px; color: color-mix(in srgb, var(--c) 70%, black); }
   .guide-body h4 { color: color-mix(in srgb, var(--c) 70%, black); }
@@ -562,6 +588,45 @@
       card: { name: "探險的候鳥", text: "準備好聽聽不一樣的語言，飛去遠方了嗎？" },
       mission: { title: "學一個心情單字", task: "聽一個英文故事，學會一個表達心情的英文單字（例如 happy、brave、worried）。", field: "英文單字" } }
   ];
+
+  // 完整介紹頁「推薦繪本」：t 書名、a 作者／出版、u 單本連結（沒有就連到資料庫）、c 封面（沒有就顯示書名卡）
+  const PICKS = {
+    storybook: [
+      { t: "會說話的洞", a: "朱靜容／斗六繪本館", u: "https://storybook.nlpi.edu.tw/book-single.aspx?BookNO=261", c: "sb-261" },
+      { t: "小旅途", a: "金亭佑、賴曉琦、廖筱安、黃鈺晴／明道中學", u: "https://storybook.nlpi.edu.tw/book-single.aspx?BookNO=995", c: "sb-995" },
+      { t: "花花熊", a: "許哲綸、賴俐安／明道中學", u: "https://storybook.nlpi.edu.tw/book-single.aspx?BookNO=81", c: "sb-81" },
+      { t: "我家的小怪獸", a: "陳珮琦／斗六繪本館", u: "https://storybook.nlpi.edu.tw/book-single.aspx?BookNO=1428", c: "sb-1428" },
+      { t: "鱷魚琳琳上學囉", a: "吳佳憲、蘇品瑄／高雄市立前鎮高級中學", u: "https://storybook.nlpi.edu.tw/book-single.aspx?BookNO=1258", c: "sb-1258" }
+    ],
+    ebook: [
+      { t: "魔幻大戲院", a: "黃郁欽／國家電影及視聽文化中心", u: "https://ebook.nlpi.edu.tw/book/61229", c: "eb-61229" },
+      { t: "阿爸親像山", a: "吳沛珊、蔡媛婷／玉山國家公園管理處", u: "https://ebook.nlpi.edu.tw/book/57483", c: "eb-57483" },
+      { t: "不再孤單", a: "Joseph Coelho／時報出版", u: "https://ebook.nlpi.edu.tw/book/46970", c: "eb-46970" },
+      { t: "短耳兔", a: "唐唐／親子天下", u: "https://ebook.nlpi.edu.tw/book/21142", c: "eb-21142" },
+      { t: "勇敢小火車：卡爾的特別任務", a: "賴馬／親子天下", u: "https://ebook.nlpi.edu.tw/book/38504", c: "eb-38504" }
+    ],
+    grimm: [
+      { t: "頑皮公主萬萬歲" },
+      { t: "好運氣，壞運氣？" },
+      { t: "鐵絲網上的小花", c: "gr-flower" },
+      { t: "阿比忘了什麼", c: "gr-abby" },
+      { t: "旅館開，錢進來" }
+    ],
+    funpark: [
+      { t: "醜小鴨" },
+      { t: "勇敢的小錫兵" },
+      { t: "阿嬤的愛心 陳樹菊" },
+      { t: "布萊梅樂隊" },
+      { t: "小木偶奇遇記" }
+    ],
+    tumble: [
+      { t: "Enemy Pie", c: "tb-enemy" },
+      { t: "Dixie and the Big Bully", c: "tb-dixie" },
+      { t: "Ish", c: "tb-ish" },
+      { t: "Duck! Rabbit!", c: "tb-duck" },
+      { t: "The Librarian of Basra", c: "tb-basra" }
+    ]
+  };
   const byId = Object.fromEntries(LIBS.map(l => [l.id, l]));
 
   // ── 本機儲存（讀寫失敗也照常顯示）────────────────────
@@ -844,7 +909,8 @@
       el.innerHTML =
         '<div class="guide-land" aria-hidden="true"><span class="pill"></span></div>' +
         '<div class="guide-grid">' +
-          '<figure class="shot"><div class="shot-frame"><div class="shot-bar"><i></i><i></i><i></i></div><img loading="lazy"></div><figcaption></figcaption></figure>' +
+          '<div class="shot"><figure><div class="shot-frame"><div class="shot-bar"><i></i><i></i><i></i></div><img loading="lazy"></div><figcaption></figcaption></figure>' +
+            '<section class="picks"><h4>📚 推薦繪本</h4><ul class="pick-list"></ul><p class="pick-note"></p></section></div>' +
           '<div class="guide-body">' +
             '<h3><span class="ic" aria-hidden="true"></span><span class="nm"></span></h3>' +
             '<div class="tags"></div>' +
@@ -858,6 +924,38 @@
       img.src = g.img;
       img.alt = lib.name + "畫面截圖";
       el.querySelector("figcaption").textContent = g.cap;
+      const picks = PICKS[lib.id] || [];
+      const pickList = el.querySelector(".pick-list");
+      picks.forEach(b => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = b.u || lib.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.title = b.a ? b.t + "（" + b.a + "）" : b.t;
+        a.addEventListener("click", () => track("book_open", { forest: lib.name, book: b.t }));
+        const cv = document.createElement("span");
+        cv.className = "pick-cover" + (b.c ? "" : " blank");
+        if (b.c) {
+          const im = document.createElement("img");
+          im.src = "img/books/" + b.c + ".jpg";
+          im.alt = "《" + b.t + "》封面";
+          im.loading = "lazy";
+          cv.appendChild(im);
+        } else {
+          cv.textContent = b.t;
+        }
+        const nm = document.createElement("span");
+        nm.className = "pick-name";
+        nm.textContent = "《" + b.t + "》";
+        a.append(cv, nm);
+        li.appendChild(a);
+        pickList.appendChild(li);
+      });
+      el.querySelector(".picks").hidden = !picks.length;
+      el.querySelector(".pick-note").textContent = picks.some(b => b.u)
+        ? "點封面直接打開這本書"
+        : "點書名會進入" + lib.name + "，登入後搜尋書名就能找到";
       el.querySelector(".guide-land").style.backgroundImage = 'url("img/land-' + lib.id + '.jpg")';
       el.querySelector(".pill").textContent = lib.card.name;
       el.querySelector(".ic").textContent = lib.icon;
